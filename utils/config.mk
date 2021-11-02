@@ -35,7 +35,8 @@ core_obj   :=	entry.o \
 		idt.o	\
 		excp.o	\
 		util.o  \
-		stack.o
+		stack.o \
+		libv1.o
 
 objects    := $(addprefix $(CORE), $(core_obj))
 
@@ -55,7 +56,7 @@ QFDA := -drive media=disk,format=raw,if=floppy,file=../utils/grub.floppy
 QHDD := -drive media=disk,format=raw,if=ide,index=0,file=fat:rw:.
 QSRL := -serial mon:stdio
 QDBG := -d int,pcall,cpu_reset,unimp,guest_errors
-QOPT := $(QFDA) $(QHDD) $(QSRL) -boot a -nographic
+QOPT := $(QFDA) $(QHDD) $(QSRL) $(GQBG) -boot a -nographic
 
 ifneq ($(findstring "kvm",$(QEMU)),)
 QOPT += -cpu host

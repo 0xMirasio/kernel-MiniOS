@@ -41,6 +41,7 @@ idt_common:
         mov     %esp, %eax
         call    intr_hdlr
 
+
 resume_from_intr:
         popa
         add     $8, %esp

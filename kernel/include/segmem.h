@@ -79,7 +79,7 @@ typedef union segment_selector
 #define SEG_DESC_SYS_TSS_AVL_64     0x9
 #define SEG_DESC_SYS_TSS_BUSY_64    0xb
 #define SEG_DESC_SYS_CALL_GATE_64   0xc
-#define SEG_DESC_SYS_INTR_GATE_64   0xe
+#define SEG_DESC_SYS_INTR_GATE_64   0xeF
 #define SEG_DESC_SYS_TRAP_GATE_64   0xf
 
 typedef union segment_descriptor

@@ -7,13 +7,16 @@ extern info_t *info;
 extern void idt_trampoline();
 static int_desc_t IDT[IDT_NR_DESC];
 
+extern void bp_handler();
+
+
 void intr_init()
 {
    idt_reg_t idtr;
    offset_t  isr;
    size_t    i;
 
-   isr = (offset_t)idt_trampoline;
+   isr = (offset_t)bp_handler;
 
    /* re-use default grub GDT code descriptor */
    for(i=0 ; i<IDT_NR_DESC ; i++, isr += IDT_ISR_ALGN)
@@ -23,9 +26,11 @@ void intr_init()
    idtr.limit = sizeof(IDT) - 1;
    set_idtr(idtr);
 }
-
 void __regparm__(1) intr_hdlr(int_ctx_t *ctx)
 {
+
+   uint8_t vector = ctx->nr.blow;	
+
    debug("\nIDT event\n"
          " . int    #%d\n"
          " . error  0x%x\n"
@@ -53,8 +58,6 @@ void __regparm__(1) intr_hdlr(int_ctx_t *ctx)
          ,ctx->gpr.ebp.raw
          ,ctx->gpr.esi.raw
          ,ctx->gpr.edi.raw);
-
-   uint8_t vector = ctx->nr.blow;
 
    if(vector < NR_EXCP)
       excp_hdlr(ctx);
